@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <datagrid>
+        <RealmServerURL>http://vtibappsbx01:8080</RealmServerURL>
+        <com.tibco.tibdg.transacted>false</com.tibco.tibdg.transacted>
+        <com.tibco.tibdg.connectwaittime>0.1</com.tibco.tibdg.connectwaittime>
+        <com.tibco.tibdg.timeout>5.0</com.tibco.tibdg.timeout>
+        <designer/>
+    </datagrid>
+</Repository:repository>

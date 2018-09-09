@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+    <pd:name>Services/LoadAppsInCache.process</pd:name>
+    <pd:startName>Timer</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>148</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <StartTime>1535811275000</StartTime>
+            <Frequency>true</Frequency>
+            <TimeInterval>1</TimeInterval>
+            <FrequencyIndex>Second</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>460</pd:endX>
+    <pd:endY>70</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1535808345086</pd:targetNamespace>
+    <pd:activity name="QueryApps">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>266</pd:x>
+        <pd:y>73</pd:y>
+        <config>
+            <timeout>%%ApplicationDetails/NonAPI/DB-TimeOut%%</timeout>
+            <commit>false</commit>
+            <maxRows>%%ApplicationDetails/NonAPI/DB-MaxReturns%%</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/TIB_CLE.sharedjdbc</jdbcSharedConfig>
+            <statement>select applicationid,interfaceid from cle.interfaceconfig</statement>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>APPLICATIONID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>INTERFACEID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR2</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SetVariable">
+        <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
+        <pd:x>368</pd:x>
+        <pd:y>155</pd:y>
+        <config>
+            <variableConfig>/SharedResources/Cache/SV_Apps.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings>
+            <Apps>
+                <xsl:for-each select="$QueryApps/resultSet/Record">
+                    <rows>
+                        <applicationid>
+                            <xsl:value-of select="APPLICATIONID"/>
+                        </applicationid>
+                        <interfaceid>
+                            <xsl:value-of select="INTERFACEID"/>
+                        </interfaceid>
+                    </rows>
+                </xsl:for-each>
+            </Apps>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>QueryApps</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>QueryApps</pd:from>
+        <pd:to>SetVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetVariable</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

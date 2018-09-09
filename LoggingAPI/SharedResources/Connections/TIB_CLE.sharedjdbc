@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>TIB_CLE</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>oracle.jdbc.driver.OracleDriver (thin)</driver>
+        <maxConnections>10</maxConnections>
+        <loginTimeout>0</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>jdbc:oracle:thin:@vtibdbdv01.zmr.zimmer.com:1521:tibdev</location>
+        <user>CLE</user>
+        <password>#!TFdZW/r6bb7ObQhspf7rpVEmCkjiJ85pINsUjIJZeng=</password>
+    </config>
+</BWSharedResource>

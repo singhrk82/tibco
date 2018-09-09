@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>TIB_POSTGRES</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>org.postgresql.Driver</driver>
+        <maxConnections>10</maxConnections>
+        <loginTimeout>0</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>jdbc:postgresql://vtibadmdv01.zmr.zimmer.com:5432/postgres</location>
+        <user>postgres</user>
+        <password>#!ZCWPjES4N5WKRETCWMwVg5Eett9ApLsy</password>
+    </config>
+</BWSharedResource>

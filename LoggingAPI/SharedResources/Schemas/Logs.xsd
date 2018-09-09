@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="logs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="applicationid"/>
+				<xs:element ref="componentname" minOccurs="0"/>
+				<xs:element ref="hostname" minOccurs="0"/>
+				<xs:element ref="timestamp" minOccurs="0"/>
+				<xs:element ref="transactiondomain" minOccurs="0"/>
+				<xs:element ref="transactiontype" minOccurs="0"/>
+				<xs:element ref="transactionid"/>
+				<xs:element ref="correlationid" minOccurs="0"/>
+				<xs:element ref="interfaceid"/>
+				<xs:element ref="filename" minOccurs="0"/>
+				<xs:element ref="message" minOccurs="0"/>
+				<xs:element ref="payload" minOccurs="0"/>
+				<xs:element ref="status" minOccurs="0"/>
+				<xs:element ref="category" minOccurs="0"/>
+				<xs:element ref="logid" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="applicationid" type="xs:string"/>
+	<xs:element name="componentname" type="xs:string"/>
+	<xs:element name="hostname" type="xs:string"/>
+	<xs:element name="timestamp" type="xs:string"/>
+	<xs:element name="transactiondomain" type="xs:string"/>
+	<xs:element name="transactiontype" type="xs:string"/>
+	<xs:element name="transactionid" type="xs:string"/>
+	<xs:element name="correlationid" type="xs:string"/>
+	<xs:element name="interfaceid" type="xs:string"/>
+	<xs:element name="filename" type="xs:string"/>
+	<xs:element name="message" type="xs:string"/>
+	<xs:element name="payload" type="xs:string"/>
+	<xs:element name="logresp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="logs" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="status" type="xs:string"/>
+	<xs:element name="category" type="xs:string"/>
+	<xs:element name="logid" type="xs:string"/>
+</xs:schema>

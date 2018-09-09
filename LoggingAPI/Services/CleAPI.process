@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/CommonLE2/namespace/Public/Common/RequestHeader.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Logs.xsd" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Logs.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/CommonLE2/namespace/Public/Logging/LogRequest.xsd" schemaLocation="/CLE/SharedResources/Schemas/Public/Logging/LogRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/SharedResources/Schemas/Logs.xsd" schemaLocation="/SharedResources/Schemas/Logs.xsd"/>
+    <pd:name>Services/CleAPI.process</pd:name>
+    <pd:startName>Receive Call</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Receive Call">
+        <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
+        <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
+        <pd:x>40</pd:x>
+        <pd:y>297</pd:y>
+        <config>
+            <outputMode>String</outputMode>
+            <defaultEncoding>UTF8</defaultEncoding>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <sharedChannel>/SharedResources/Connections/HTTP.sharedhttp</sharedChannel>
+            <customField/>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Connection" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1084</pd:endX>
+    <pd:endY>296</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1534908103533</pd:targetNamespace>
+    <pd:activity name="NoFilterOutput">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>582</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx4:logresp"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <logresp>
+                    <xsl:for-each select="$Fetch-Data--Log-Table/jdbcGeneralActivityOutput/unknownResultset/row">
+                        <logs>
+                            <applicationid>
+                                <xsl:value-of select="column[1]/value"/>
+                            </applicationid>
+                            <componentname>
+                                <xsl:value-of select="column[6]/value"/>
+                            </componentname>
+                            <hostname>
+                                <xsl:value-of select="column[7]/value"/>
+                            </hostname>
+                            <timestamp>
+                                <xsl:value-of select="column[15]/value"/>
+                            </timestamp>
+                            <transactiondomain>
+                                <xsl:value-of select="column[8]/value"/>
+                            </transactiondomain>
+                            <transactiontype>
+                                <xsl:value-of select="column[9]/value"/>
+                            </transactiontype>
+                            <transactionid>
+                                <xsl:value-of select="column[3]/value"/>
+                            </transactionid>
+                            <correlationid>
+                                <xsl:value-of select="column[4]/value"/>
+                            </correlationid>
+                            <interfaceid>
+                                <xsl:value-of select="column[2]/value"/>
+                            </interfaceid>
+                            <filename>
+                                <xsl:value-of select="column[14]/value"/>
+                            </filename>
+                            <message>
+                                <xsl:value-of select="column[11]/value"/>
+                            </message>
+                            <xsl:if test="column[13]/value">
+                                <payload>
+                                    <xsl:value-of select="column[13]/value"/>
+                                </payload>
+                            </xsl:if>
+                            <xsl:if test="column[12]/value">
+                                <status>
+                                    <xsl:value-of select="column[12]/value"/>
+                                </status>
+                            </xsl:if>
+                            <xsl:if test="column[10]/value">
+                                <category>
+                                    <xsl:value-of select="column[10]/value"/>
+                                </category>
+                            </xsl:if>
+                            <xsl:if test="column[5]/value">
+                                <logid>
+                                    <xsl:value-of select="column[5]/value"/>
+                                </logid>
+                            </xsl:if>
+                        </logs>
+                    </xsl:for-each>
+                </logresp>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>315</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($Receive-Call/ProcessStarterOutput)"/>
+                </message>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Fetch Data  Log Table">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>430</pd:x>
+        <pd:y>43</pd:y>
+        <config>
+            <timeout>%%ApplicationDetails/API/DB-TimeOut%%</timeout>
+            <commit>false</commit>
+            <maxRows>%%ApplicationDetails/API/DB-MaxReturns%%</maxRows>
+            <jdbcSharedConfig>/SharedResources/Connections/TIB_POSTGRES.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="&quot;select * from public.tibco_logs&quot;"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Query Data Dynamic">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>471</pd:x>
+        <pd:y>155</pd:y>
+        <config>
+            <timeout>%%ApplicationDetails/API/DB-TimeOut%%</timeout>
+            <commit>false</commit>
+            <maxRows>%%ApplicationDetails/API/DB-MaxReturns%%</maxRows>
+            <jdbcSharedConfig>/SharedResources/Connections/TIB_POSTGRES.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;select * from public.tibco_logs where &quot;,$Prepare-Filters/Query/where-condition)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send-Response-1">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>818</pd:x>
+        <pd:y>60</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>Receive Call</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Access-Control-Allow-Origin" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <xsl:choose>
+                    <xsl:when test="string-length($NoFilterOutput/ns:ActivityOutputClass/jsonString)!=0">
+                        <asciiContent>
+                            <xsl:value-of select="$NoFilterOutput/ns:ActivityOutputClass/jsonString"/>
+                        </asciiContent>
+                    </xsl:when>
+                    <xsl:when test="string-length($FilterOutput/ns:ActivityOutputClass/jsonString)!=0">
+                        <asciiContent>
+                            <xsl:value-of select="$FilterOutput/ns:ActivityOutputClass/jsonString"/>
+                        </asciiContent>
+                    </xsl:when>
+                </xsl:choose>
+                <Headers>
+                    <Access-Control-Allow-Origin>
+                        <xsl:value-of select="&quot;*&quot;"/>
+                    </Access-Control-Allow-Origin>
+                </Headers>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="FilterOutput">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>625</pd:x>
+        <pd:y>156</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx4:logresp"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <logresp>
+                    <xsl:for-each select="$Query-Data-Dynamic/jdbcGeneralActivityOutput/unknownResultset/row">
+                        <logs>
+                            <applicationid>
+                                <xsl:value-of select="column[1]/value"/>
+                            </applicationid>
+                            <componentname>
+                                <xsl:value-of select="column[6]/value"/>
+                            </componentname>
+                            <hostname>
+                                <xsl:value-of select="column[7]/value"/>
+                            </hostname>
+                            <timestamp>
+                                <xsl:value-of select="column[15]/value"/>
+                            </timestamp>
+                            <transactiondomain>
+                                <xsl:value-of select="column[8]/value"/>
+                            </transactiondomain>
+                            <transactiontype>
+                                <xsl:value-of select="column[9]/value"/>
+                            </transactiontype>
+                            <transactionid>
+                                <xsl:value-of select="column[3]/value"/>
+                            </transactionid>
+                            <correlationid>
+                                <xsl:value-of select="column[4]/value"/>
+                            </correlationid>
+                            <interfaceid>
+                                <xsl:value-of select="column[2]/value"/>
+                            </interfaceid>
+                            <filename>
+                                <xsl:value-of select="column[14]/value"/>
+                            </filename>
+                            <message>
+                                <xsl:value-of select="column[11]/value"/>
+                            </message>
+                            <xsl:if test="column[13]/value">
+                                <payload>
+                                    <xsl:value-of select="column[13]/value"/>
+                                </payload>
+                            </xsl:if>
+                            <xsl:if test="column[12]/value">
+                                <status>
+                                    <xsl:value-of select="column[12]/value"/>
+                                </status>
+                            </xsl:if>
+                            <xsl:if test="column[10]/value">
+                                <category>
+                                    <xsl:value-of select="column[10]/value"/>
+                                </category>
+                            </xsl:if>
+                            <xsl:if test="column[5]/value">
+                                <logid>
+                                    <xsl:value-of select="column[5]/value"/>
+                                </logid>
+                            </xsl:if>
+                        </logs>
+                    </xsl:for-each>
+                </logresp>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Prepare Filters">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>326</pd:x>
+        <pd:y>155</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Query">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="where-condition" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <Query>
+                <xsl:variable name="noOfQueryString" select="tib:tokenize($Receive-Call/ProcessStarterOutput/QueryString,&quot;&amp;&quot;)"/>
+                <where-condition>
+                    <xsl:value-of select="tib:concat-sequence-format($noOfQueryString,&quot; and &quot;)"/>
+                </where-condition>
+            </Query>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>473</pd:x>
+        <pd:y>794</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Method Not Supported Response">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>804</pd:x>
+        <pd:y>471</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>Receive Call</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Access-Control-Allow-Origin" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <xsl:choose>
+                    <xsl:when test="string-length($Wrong-URI/ns:ActivityOutputClass/jsonString)!=0">
+                        <asciiContent>
+                            <xsl:value-of select="$Wrong-URI/ns:ActivityOutputClass/jsonString"/>
+                        </asciiContent>
+                    </xsl:when>
+                    <xsl:when test="string-length($Error-Msg-1/ns:ActivityOutputClass/jsonString)!=0">
+                        <asciiContent>
+                            <xsl:value-of select="$Error-Msg-1/ns:ActivityOutputClass/jsonString"/>
+                        </asciiContent>
+                    </xsl:when>
+                </xsl:choose>
+                <Headers>
+                    <Access-Control-Allow-Origin>
+                        <xsl:value-of select="&quot;*&quot;"/>
+                    </Access-Control-Allow-Origin>
+                </Headers>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="DB timeout">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>476</pd:x>
+        <pd:y>672</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>false</catchAll>
+            <fault>localname=JDBCTimedOutException namespace=http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions</fault>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Error Msg 1">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>378</pd:x>
+        <pd:y>467</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="ErrMsg">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="msg" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <ErrMsg>
+                    <msg>
+                        <xsl:value-of select="&quot;HTTP Method Not Allowed&quot;"/>
+                    </msg>
+                </ErrMsg>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Msg 2">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>686</pd:x>
+        <pd:y>669</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="ErrMsg">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="msg" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <ErrMsg>
+                    <msg>
+                        <xsl:value-of select="&quot;Backend is down or not reachable&quot;"/>
+                    </msg>
+                </ErrMsg>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Error Msg 3">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>699</pd:x>
+        <pd:y>795</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="ErrMsg">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="msg" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <ErrMsg>
+                    <msg>
+                        <xsl:value-of select="tib:render-xml($Catch/exceptiondata/*)"/>
+                    </msg>
+                </ErrMsg>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>60</pd:x>
+        <pd:y>470</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Check URI">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>159</pd:x>
+        <pd:y>299</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="cleapi">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>160</pd:x>
+        <pd:y>129</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Wrong URI">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>458</pd:x>
+        <pd:y>373</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="ErrMsg">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="msg" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <ErrMsg>
+                    <msg>
+                        <xsl:value-of select="&quot;Please check our URI&quot;"/>
+                    </msg>
+                </ErrMsg>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send HTTP Response">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>959</pd:x>
+        <pd:y>665</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>Receive Call</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <xsl:choose>
+                    <xsl:when test="string-length($Error-Msg-2/ns:ActivityOutputClass/jsonString)!=0">
+                        <asciiContent>
+                            <xsl:value-of select="$Error-Msg-2/ns:ActivityOutputClass/jsonString"/>
+                        </asciiContent>
+                    </xsl:when>
+                    <xsl:when test="string-length($Error-Msg-3/ns:ActivityOutputClass/jsonString)!=0">
+                        <asciiContent>
+                            <xsl:value-of select="$Error-Msg-3/ns:ActivityOutputClass/jsonString"/>
+                        </asciiContent>
+                    </xsl:when>
+                </xsl:choose>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Apps from Cache">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>437</pd:x>
+        <pd:y>303</pd:y>
+        <config>
+            <variableConfig>/SharedResources/Cache/SV_Apps.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Prepare Apps Details">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>638</pd:x>
+        <pd:y>302</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="Apps">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="data" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="applicationid" type="xsd:string"/>
+                                        <xsd:element name="interfaceid" type="xsd:string"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <Apps>
+                    <xsl:for-each select="$Get-Apps-from-Cache/Apps/rows">
+                        <data>
+                            <applicationid>
+                                <xsl:value-of select="applicationid"/>
+                            </applicationid>
+                            <interfaceid>
+                                <xsl:value-of select="interfaceid"/>
+                            </interfaceid>
+                        </data>
+                    </xsl:for-each>
+                </Apps>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Apps Details">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>869</pd:x>
+        <pd:y>291</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>Receive Call</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of select="$Prepare-Apps-Details/ns:ActivityOutputClass/jsonString"/>
+                </asciiContent>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>NoFilterOutput</pd:from>
+        <pd:to>Send-Response-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Fetch Data  Log Table</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Query Data Dynamic</pd:from>
+        <pd:to>FilterOutput</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>FilterOutput</pd:from>
+        <pd:to>Send-Response-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send-Response-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Prepare Filters</pd:from>
+        <pd:to>Query Data Dynamic</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Error Msg 3</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Method Not Supported Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>DB timeout</pd:from>
+        <pd:to>Error Msg 2</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Fetch Data  Log Table</pd:from>
+        <pd:to>NoFilterOutput</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Receive Call</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:xpathDescription>No GET MEthod</pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Receive-Call/ProcessStarterOutput/Method!='GET'</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>Error Msg 1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Receive Call</pd:from>
+        <pd:to>Check URI</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>cleapi</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:xpathDescription>string-length($Receive-Call/ProcessStarterOutput/QueryString)=0  and $Receive-Call/ProcessStarterOutput/Method='GET'   and string-length($Receive-Call/ProcessStarterOutput/RequestURI) &gt; 1</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Receive-Call/ProcessStarterOutput/QueryString)=0  and $Receive-Call/ProcessStarterOutput/Method='GET'   and string-length($Receive-Call/ProcessStarterOutput/RequestURI) &gt; 1</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>cleapi</pd:from>
+        <pd:to>Prepare Filters</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Receive-Call/ProcessStarterOutput/QueryString)!=0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check URI</pd:from>
+        <pd:to>cleapi</pd:to>
+        <pd:xpathDescription>search logs</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Receive-Call/ProcessStarterOutput/RequestURI='/cleapi' or $Receive-Call/ProcessStarterOutput/RequestURI='/cleapi/'  or contains($Receive-Call/ProcessStarterOutput/RequestURI,'/cleapi?')</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check URI</pd:from>
+        <pd:to>Wrong URI</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Wrong URI</pd:from>
+        <pd:to>Method Not Supported Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Msg 2</pd:from>
+        <pd:to>Send HTTP Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send HTTP Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Msg 1</pd:from>
+        <pd:to>Method Not Supported Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error Msg 3</pd:from>
+        <pd:to>Send HTTP Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check URI</pd:from>
+        <pd:to>Get Apps from Cache</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Apps from Cache</pd:from>
+        <pd:to>Prepare Apps Details</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Prepare Apps Details</pd:from>
+        <pd:to>Send Apps Details</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Apps Details</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

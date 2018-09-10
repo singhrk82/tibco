@@ -4,7 +4,7 @@ pipeline {
     stage('Checkout') {
       steps {
         mail(subject: 'test', to: 'ranjeetkumar.singh@zimmerbiomet.com', body: 'test', from: 'jenkins@zimmerbiomet.com')
-        bat(script: '"c:\\Program Files\\Git\\bin\\git.exe" clone https://github.com/singhrk82/tibco.git', returnStatus: true)
+        bat(script: 'C:\\TEMP\\build.bat', returnStatus: true, returnStdout: true)
       }
     }
   }

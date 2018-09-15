@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'VTIBAPPDV02'
+    }
+
+  }
   stages {
     stage('Checkout') {
       parallel {

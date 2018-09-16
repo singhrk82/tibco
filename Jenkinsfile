@@ -18,5 +18,10 @@ pipeline {
         }
       }
     }
+    stage('deploy') {
+      steps {
+        bat 'fsda'
+      }
+    }
   }
 }

@@ -10,6 +10,7 @@ pipeline {
       }
       steps {
         mail(subject: 'test', to: 'ranjeetkumar.singh@zimmerbiomet.com', body: 'test', from: 'jenkins@zimmerbiomet.com')
+        sh 'bit checkout v1.0'
       }
     }
   }

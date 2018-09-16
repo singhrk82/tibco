@@ -1,13 +1,5 @@
 pipeline {
   agent any
-  parameters {
-    string(name: 'TagValue', defaultValue: 'v1.0', description: 'Give tag value')
-    choice(name: 'DeployType', choices: '''ear-only
-full''', description: 'Choose Deployment Type')
-    choice(name: 'Env', choices: '''QA
-PROD''', description: 'Give Env value')
-  }
-  
   stages {
     stage('Build') {
       agent {
@@ -21,9 +13,15 @@ PROD''', description: 'Give Env value')
         echo " echoing ${params.DeployType}"
         echo " echoing ${params.Env}"
         mail(subject: 'test', to: 'ranjeetkumar.singh@zimmerbiomet.com', body: 'test', from: 'jenkins@zimmerbiomet.com')
-        bat 'c:\\temp\\build.bat' 
+        bat(script: 'c:\\temp\\build.bat', returnStatus: true, returnStdout: true)
       }
     }
   }
-  
+  parameters {
+    string(name: 'TagValue', defaultValue: 'v1.0', description: 'Give tag value')
+    choice(name: 'DeployType', choices: '''ear-only
+full''', description: 'Choose Deployment Type')
+    choice(name: 'Env', choices: '''QA
+PROD''', description: 'Give Env value')
+  }
 }

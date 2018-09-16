@@ -13,7 +13,7 @@ pipeline {
         stage('Test') {
           agent {
             node {
-              label 'VTIBAPPDV02'
+              label 'master'
             }
 
           }

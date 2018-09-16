@@ -11,16 +11,17 @@ pipeline {
           }
         }
         stage('Test') {
+          agent {
+            node {
+              label 'VTIBAPPDV02'
+            }
+
+          }
           steps {
             echo 'Just a test'
             echo 'test'
           }
         }
-      }
-    }
-    stage('deploy') {
-      steps {
-        bat 'fsda'
       }
     }
   }

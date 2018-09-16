@@ -13,5 +13,16 @@ pipeline {
         bat(script: 'C:\\TEMP\\build.bat', returnStatus: true, returnStdout: true, encoding: 'UTF-8')
       }
     }
+    stage('Deploy') {
+      agent {
+        node {
+          label 'VTIBAPPDV02'
+        }
+
+      }
+      steps {
+        bat 'c:\\temp\\deploy.bat'
+      }
+    }
   }
 }

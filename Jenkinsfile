@@ -13,7 +13,7 @@ pipeline {
         echo " echoing ${params.DeployType}"
         echo " echoing ${params.Env}"
         mail(subject: 'test', to: 'ranjeetkumar.singh@zimmerbiomet.com', body: 'test', from: 'jenkins@zimmerbiomet.com')
-        bat 'c:\\temp\\build.bat'
+        bat 'c:\\temp\\build.bat' ${params.TagValue} ${params.DeployType} ${params.Env}
       }
     }
   }

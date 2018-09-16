@@ -14,6 +14,7 @@ pipeline {
 
       }
       steps {
+        echo " echoing ${params.TagValue}"
         mail(subject: 'test', to: 'ranjeetkumar.singh@zimmerbiomet.com', body: 'test', from: 'jenkins@zimmerbiomet.com')
         sh 'git checkout v1.0'
       }

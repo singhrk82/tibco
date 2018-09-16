@@ -1,5 +1,10 @@
 pipeline {
   agent any
+  
+  parameters {
+  string(name:'TagValue',defaultValue:'v1.0',description:'Give tag value')  
+  }
+  
   stages {
     stage('Build') {
       agent {

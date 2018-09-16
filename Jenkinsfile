@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    node {
-      label 'Master'
-    }
-
-  }
+  agent any
   stages {
     stage('Checkout') {
       parallel {

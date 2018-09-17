@@ -13,7 +13,8 @@ pipeline {
         echo " echoing ${params.DeployType}"
         echo " echoing ${params.Env}"
         mail(subject: 'test', to: 'ranjeetkumar.singh@zimmerbiomet.com', body: 'test', from: 'jenkins@zimmerbiomet.com')
-        bat 'bat mkdir checkoutcode   bat svn checkout ${params.TagValue}'
+        bat 'mkdir checkoutcode'
+        bat 'svn checkout ${params.TagValue}'
       }
     }
   }

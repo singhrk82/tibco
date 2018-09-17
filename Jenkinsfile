@@ -14,7 +14,7 @@ pipeline {
         echo " echoing ${params.Env}"
         mail(subject: 'test', to: 'ranjeetkumar.singh@zimmerbiomet.com', body: 'test', from: 'jenkins@zimmerbiomet.com')
         bat 'mkdir checkoutcode'
-        bat 'svn checkout ${params.TagValue}'
+        bat 'svn checkout {params.TagValue}'
       }
     }
   }
